@@ -12,4 +12,8 @@ export const sharedErrors = {
     code: 'USER_NOT_AUTHENTICATED',
     message: 'User not authenticated',
   }),
+  API_KEY_NOT_CONFIGURED: new ErrorWithCode({
+    code: 'API_KEY_NOT_CONFIGURED',
+    message: 'API key not configured',
+  }),
 }
