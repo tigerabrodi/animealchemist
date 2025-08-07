@@ -1,12 +1,10 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
-
 html,
 body {
   height: 100%;
-  font-family: 'Inter Variable', sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 #root {
@@ -20,123 +18,168 @@ button {
   cursor: pointer;
 }
 
-@theme inline {
+@theme {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
+  
+  /* Base colors - soft, anime-inspired palette */
+  --color-background: hsl(330 100% 98%);
+  --color-foreground: hsl(340 15% 15%);
+  
+  /* Card system with subtle anime gradients */
+  --color-card: hsl(0 0% 100%);
+  --color-card-foreground: hsl(340 15% 15%);
+  
+  --color-popover: hsl(0 0% 100%);
+  --color-popover-foreground: hsl(340 15% 15%);
+  
+  /* Primary - vibrant anime pink/purple */
+  --color-primary: hsl(320 65% 55%);
+  --color-primary-foreground: hsl(0 0% 100%);
+  --color-primary-glow: hsl(320 65% 75%);
+  
+  /* Secondary - soft lavender */
+  --color-secondary: hsl(280 25% 92%);
+  --color-secondary-foreground: hsl(340 15% 25%);
+  
+  /* Muted - gentle background tones */
+  --color-muted: hsl(300 20% 96%);
+  --color-muted-foreground: hsl(340 10% 45%);
+  
+  /* Accent - bright anime blue */
+  --color-accent: hsl(200 90% 65%);
+  --color-accent-foreground: hsl(0 0% 100%);
+  --color-accent-glow: hsl(200 90% 85%);
+  
+  /* Destructive - soft anime red */
+  --color-destructive: hsl(0 75% 65%);
+  --color-destructive-foreground: hsl(0 0% 100%);
+  
+  /* Borders and inputs */
+  --color-border: hsl(300 15% 85%);
+  --color-input: hsl(300 15% 90%);
+  --color-ring: hsl(320 65% 55%);
+  
+  /* Success - anime green */
+  --color-success: hsl(150 70% 55%);
+  --color-success-foreground: hsl(0 0% 100%);
+  
+  /* Warning - anime orange */
+  --color-warning: hsl(30 85% 65%);
+  --color-warning-foreground: hsl(0 0% 100%);
+  
+  /* Sidebar colors */
+  --color-sidebar: hsl(0 0% 98%);
+  --color-sidebar-foreground: hsl(240 5.3% 26.1%);
+  --color-sidebar-primary: hsl(240 5.9% 10%);
+  --color-sidebar-primary-foreground: hsl(0 0% 98%);
+  --color-sidebar-accent: hsl(240 4.8% 95.9%);
+  --color-sidebar-accent-foreground: hsl(240 5.9% 10%);
+  --color-sidebar-border: hsl(220 13% 91%);
+  --color-sidebar-ring: hsl(217.2 91.2% 59.8%);
 }
 
 :root {
   --radius: 0.75rem;
-  /* Dark theme with orange/amber accents */
-  --background: oklch(0.129 0.042 264.695);
-  --foreground: oklch(0.984 0.003 247.858);
-  --card: oklch(0.208 0.042 265.755);
-  --card-foreground: oklch(0.984 0.003 247.858);
-  --popover: oklch(0.208 0.042 265.755);
-  --popover-foreground: oklch(0.984 0.003 247.858);
-  /* Primary - Orange/Amber */
-  --primary: oklch(0.75 0.15 45);
-  --primary-foreground: oklch(0.129 0.042 264.695);
-  --secondary: oklch(0.279 0.041 260.031);
-  --secondary-foreground: oklch(0.984 0.003 247.858);
-  --muted: oklch(0.279 0.041 260.031);
-  --muted-foreground: oklch(0.704 0.04 256.788);
-  /* Accent - Bright orange for highlights */
-  --accent: oklch(0.75 0.15 45);
-  --accent-foreground: oklch(0.129 0.042 264.695);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.75 0.15 45);
-  --chart-1: oklch(0.75 0.15 45);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.208 0.042 265.755);
-  --sidebar-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-primary: oklch(0.75 0.15 45);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.279 0.041 260.031);
-  --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.75 0.15 45);
-}
-
-.dark {
-  --background: oklch(0.129 0.042 264.695);
-  --foreground: oklch(0.984 0.003 247.858);
-  --card: oklch(0.208 0.042 265.755);
-  --card-foreground: oklch(0.984 0.003 247.858);
-  --popover: oklch(0.208 0.042 265.755);
-  --popover-foreground: oklch(0.984 0.003 247.858);
-  /* Primary - Orange/Amber */
-  --primary: oklch(0.75 0.15 45);
-  --primary-foreground: oklch(0.129 0.042 264.695);
-  --secondary: oklch(0.279 0.041 260.031);
-  --secondary-foreground: oklch(0.984 0.003 247.858);
-  --muted: oklch(0.279 0.041 260.031);
-  --muted-foreground: oklch(0.704 0.04 256.788);
-  /* Accent - Bright orange for highlights */
-  --accent: oklch(0.75 0.15 45);
-  --accent-foreground: oklch(0.129 0.042 264.695);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.75 0.15 45);
-  --chart-1: oklch(0.75 0.15 45);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.208 0.042 265.755);
-  --sidebar-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-primary: oklch(0.75 0.15 45);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.279 0.041 260.031);
-  --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.75 0.15 45);
 }
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border;
   }
+  
   body {
     @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  
+  /* Custom scrollbar with anime theme */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: hsl(330 100% 98%);
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: hsl(300 15% 85%);
+    border-radius: 9999px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(200 90% 65% / 0.6);
+  }
+}
+
+@layer utilities {
+  /* Anime gradients */
+  .bg-gradient-primary {
+    background-image: linear-gradient(
+      135deg,
+      hsl(320 65% 55%),
+      hsl(320 65% 75%)
+    );
+  }
+  
+  .bg-gradient-secondary {
+    background-image: linear-gradient(
+      135deg,
+      hsl(280 25% 92%),
+      hsl(300 20% 96%)
+    );
+  }
+  
+  .bg-gradient-accent {
+    background-image: linear-gradient(
+      135deg,
+      hsl(200 90% 65%),
+      hsl(200 90% 85%)
+    );
+  }
+  
+  .bg-gradient-hero {
+    background-image: linear-gradient(
+      135deg,
+      hsl(320 65% 55%),
+      hsl(280 70% 65%),
+      hsl(200 80% 70%)
+    );
+  }
+  
+  .bg-gradient-card {
+    background-image: linear-gradient(
+      145deg,
+      hsl(0 0% 100% / 0.8),
+      hsl(300 20% 96% / 0.4)
+    );
+  }
+  
+  /* Anime shadows */
+  .shadow-anime-soft {
+    box-shadow: 0 4px 20px hsl(320 65% 55% / 0.15);
+  }
+  
+  .shadow-anime-medium {
+    box-shadow: 0 8px 30px hsl(320 65% 55% / 0.2);
+  }
+  
+  .shadow-anime-strong {
+    box-shadow: 0 12px 40px hsl(320 65% 55% / 0.25);
+  }
+  
+  .shadow-anime-glow {
+    box-shadow: 0 0 30px hsl(320 65% 75% / 0.3);
+  }
+  
+  /* Transitions */
+  .transition-smooth {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .transition-bounce {
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   }
 }
