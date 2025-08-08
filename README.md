@@ -1,59 +1,35 @@
-# React Convex Template
+<img width="1507" height="808" alt="Screenshot 2025-08-01 at 19 00 55" src="https://github.com/user-attachments/assets/cc374f18-7c7b-41c3-95d9-f75fe6e79ea4" />
 
-I did this one for myself.
+<div align="center">
+<h1 align="center">
+  <a href="https://animealchemist.com/">Anime Alchemist</a>
+</h1>
+  <p>
+Anime Alchemist is a tool that allows you to create anime characters and animations.
+  </p>
+</div>
 
-- React
-- Convex
-- Convex Auth
-- Vercel
-- Tailwind
-- Shadcn
+## Free and Open Source
 
-Has some nice prettier + eslint rules that I like. I just push to the main branch btw.
+Free and Open Source. Use your own API key to generate images and videos.
 
-I also use the same Auth logic + UI as base for all my side projects hehe + just deploy to Vercel.
+## Tech stack 💻
 
-Generally, I like using most of what Vercel has to offer, it's usually enough for me, I sometimes reach for other tools if necessary but considering Convex as a whole backend platform, I usually need very little from external services lol
+- [React](https://react.dev/) for frontend.
+- [Convex](https://www.convex.dev/) for backend.
+- [Tailwind](https://tailwindcss.com/) for styling.
+- [Shadcn](https://ui.shadcn.com/) for components.
+- [Vercel](https://vercel.com/) for hosting and web analytics.
+- [Replicate](https://replicate.com/) for AI image + video generation.
 
-# What can you build with this?
+## Cloning & running 🏄
 
-You can build anything almost, including multiplayer games.
+1. Clone the repo: `git clone https://github.com/tigerabrodi/animealchemist`
+2. Setup a Convex account and create a new project.
+3. Run `pnpm install`
+4. Run `npx convex dev` (this will setup your `.env.local` file)
+5. Run `pnpm dev`
 
-# How to get started + deploy
+## License
 
-How I do it after fork/clone + `pnpm install`:
-
-1. `npx convex dev` (you need to be logged into convex in your browser)
-2. Push to a repo
-3. Deploy to Vercel + read [deploy to vercel](https://docs.convex.dev/production/hosting/vercel#deploying-to-vercel)
-   1. Generate deploy key in Convex.
-   2. Create new vercel project.
-   3. Override build command with `npx convex deploy --cmd 'npm run build'`.
-   4. Setup CONVEX_DEPLOY_KEY environment variable with the deploy key you generated in Convex.
-   5. Deploy.
-4. `npx @convex-dev/auth`
-5. Run locally and make sure auth works for dev.
-6. `npx @convex-dev/auth --prod`
-
-# Convetions I enjoy
-
-`handlePromise` for dealing with promises over try/catch.
-
----
-
-I import convex stuff from `@/convex/...`
-
----
-
-You can see my lint config + prettier of what I prefer I guess, generally a fan of clean and simple code.
-
----
-
-`InputWithFeedback` component for inputs with error + helper text.
-
-# Tailor to your product
-
-- index.css file for the theme -> just ask ai to do it for you i guess
-- index.html file for all meta tags
-- package.json name license, etc.
-- See login form `src/pages/login/index.tsx` + add your name.
+This project is licensed under the MIT License ❤️
