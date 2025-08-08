@@ -1,5 +1,7 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router'
 
+// @ts-expect-error - fontsource-variable is not typed
+import '@fontsource-variable/rubik'
 import { Toaster } from './components/ui/sonner'
 import { AuthenticatedLayout } from './layouts/authenticated'
 import { ROUTES } from './lib/constants'
