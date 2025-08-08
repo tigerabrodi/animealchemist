@@ -280,6 +280,12 @@ export function ImageDetail() {
                           : 'Variation'}
                     </Badge>
                   </div>
+                  <div>
+                    <Label className="text-sm font-medium">Model</Label>
+                    <Badge variant="outline" className="mt-1">
+                      {image.modelId}
+                    </Badge>
+                  </div>
                 </div>
 
                 <div>
@@ -301,7 +307,7 @@ export function ImageDetail() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="flex flex-col gap-4">
-                <div>
+                <div className="flex flex-col gap-1.5">
                   <Label htmlFor="variation-prompt">Variation Prompt</Label>
                   <Textarea
                     id="variation-prompt"
@@ -342,7 +348,7 @@ export function ImageDetail() {
             </Card>
 
             {/* Generate Video */}
-            <Card>
+            <Card className="gap-4">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Video className="text-warning h-5 w-5" />
@@ -350,7 +356,7 @@ export function ImageDetail() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="flex flex-col gap-4">
-                <div>
+                <div className="flex flex-col gap-1.5">
                   <Label htmlFor="video-prompt">
                     Animation Prompt <span className="text-destructive">*</span>
                   </Label>
@@ -364,7 +370,7 @@ export function ImageDetail() {
                   />
                 </div>
 
-                <div>
+                <div className="flex flex-col gap-1.5">
                   <Label htmlFor="video-duration">Duration</Label>
                   <Select value={videoDuration} onValueChange={setVideoDuration}>
                     <SelectTrigger className="mt-1">
