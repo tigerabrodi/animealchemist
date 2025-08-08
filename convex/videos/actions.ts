@@ -39,8 +39,8 @@ export const generateVideo = action({
       throw sharedErrors.USER_NOT_AUTHENTICATED
     }
 
-    // Validate duration
-    if (args.duration < 2 || args.duration > 5) {
+    // Validate duration - Seedance 1 Pro only supports 5 or 10 seconds
+    if (![5, 10].includes(args.duration)) {
       throw videoErrors.INVALID_DURATION
     }
 
@@ -61,9 +61,11 @@ export const generateVideo = action({
     const input = {
       prompt: args.prompt,
       image: sourceImage.url, // Use the source image
-      // Additional parameters if needed by the model
-      fps: 24,
-      duration: args.duration,
+      duration: args.duration, // Must be 5 or 10
+      resolution: '1080p', // Optional but recommended
+      fps: 24, // Optional, defaults to 24
+      aspect_ratio: '16:9', // Optional
+      camera_fixed: false, // Optional
     }
 
     const [error, output] = await handlePromise(
@@ -74,31 +76,25 @@ export const generateVideo = action({
       throw videoErrors.GENERATION_FAILED
     }
 
-    // Handle output - ByteDance returns a file/stream
+    // Handle ReadableStream output from Replicate
     let blob: Blob
 
-    // Check if output is a ReadableStream or direct file
-    if (output && typeof output === 'object') {
-      if ('getReader' in output && typeof output.getReader === 'function') {
-        // It's a ReadableStream
-        const reader = output.getReader() as ReadableStreamDefaultReader<Uint8Array>
-        const chunks = []
+    if (output && typeof output === 'object' && 'getReader' in output) {
+      // It's a ReadableStream - read it chunk by chunk
+      const reader = (output as ReadableStream<Uint8Array>).getReader()
+      const chunks: Array<Uint8Array> = []
 
+      try {
         while (true) {
           const { done: isDone, value } = await reader.read()
           if (isDone) break
-          chunks.push(value)
+          if (value) chunks.push(value)
         }
-
-        blob = new Blob(chunks, { type: 'video/mp4' })
-      } else if ('url' in output && typeof output.url === 'function') {
-        // It might return a URL directly - fetch it
-        const response = await fetch(output.url() as string)
-        blob = await response.blob()
-      } else {
-        // Direct file/buffer
-        blob = new Blob([output as BlobPart], { type: 'video/mp4' })
+      } finally {
+        reader.releaseLock()
       }
+
+      blob = new Blob(chunks, { type: 'video/mp4' })
     } else {
       throw videoErrors.GENERATION_FAILED
     }
