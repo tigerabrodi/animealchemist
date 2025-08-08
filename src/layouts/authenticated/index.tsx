@@ -1,8 +1,11 @@
 import { api } from '@convex/_generated/api'
 import { useConvexAuth, useQuery } from 'convex/react'
 import { Loader2 } from 'lucide-react'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { generatePath, Outlet, useNavigate } from 'react-router'
+
+import { Header } from './components/Header'
+import { SettingsDialog } from './components/SettingsDialog'
 
 import { ROUTES } from '@/lib/constants'
 
@@ -11,6 +14,7 @@ export function AuthenticatedLayout() {
   const state = useConvexAuth()
   const isLoading = user === undefined || state.isLoading
   const navigate = useNavigate()
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false)
 
   useEffect(() => {
     if (!isLoading && !user) {
@@ -18,7 +22,7 @@ export function AuthenticatedLayout() {
     }
   }, [isLoading, user, navigate])
 
-  if (isLoading) {
+  if (isLoading || !user) {
     return (
       <div className="flex flex-1 items-center justify-center">
         <Loader2 className="size-10 animate-spin" />
@@ -26,5 +30,11 @@ export function AuthenticatedLayout() {
     )
   }
 
-  return <Outlet context={{ currentUser: user }} />
+  return (
+    <>
+      <Header onSettingsClick={() => setIsSettingsOpen(true)} currentUser={user} />
+      <Outlet context={{ currentUser: user }} />
+      <SettingsDialog isOpen={isSettingsOpen} setIsOpen={setIsSettingsOpen} />
+    </>
+  )
 }
