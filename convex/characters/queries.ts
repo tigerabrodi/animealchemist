@@ -30,7 +30,6 @@ export const getUserCharacters = query({
           .collect()
           .then((videos) => videos.length)
 
-        // Get thumbnail URL if exists
         let thumbnailUrl: string | null = null
         if (character.thumbnailImageId) {
           const thumbnailImage = await ctx.db.get(character.thumbnailImageId)
