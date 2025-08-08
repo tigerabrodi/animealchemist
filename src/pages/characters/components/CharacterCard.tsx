@@ -21,16 +21,16 @@ export function CharacterCard({ character, isCreateNew = false, onClick }: Chara
         onClick={onClick}
       >
         <CardContent className="p-0">
-          <div className="from-muted/50 to-muted/30 flex aspect-square items-center justify-center bg-gradient-to-br">
-            <div className="text-muted-foreground flex flex-col items-center gap-3 transition-transform group-hover:scale-110">
+          <div className="from-primary/50 to-primary/30 flex aspect-square items-center justify-center bg-gradient-to-br">
+            <div className="text-primary-foreground flex flex-col items-center gap-3 transition-transform group-hover:scale-110">
               <Plus className="h-12 w-12" />
-              <span className="font-medium">Create New Character</span>
+              <span className="font-bold">Create New Character</span>
             </div>
           </div>
 
           <div className="p-4">
             <p className="text-muted-foreground text-sm">
-              Bring your anime character to life with AI
+              Bring your anime character to life with AI.
             </p>
           </div>
         </CardContent>
@@ -48,17 +48,11 @@ export function CharacterCard({ character, isCreateNew = false, onClick }: Chara
       <CardContent className="p-0">
         {/* Character Thumbnail */}
         <div className="from-muted/50 to-muted/30 aspect-square overflow-hidden bg-gradient-to-br">
-          {character.thumbnailUrl ? (
-            <img
-              src={character.thumbnailUrl}
-              alt={character.name}
-              className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
-            />
-          ) : (
-            <div className="flex h-full w-full items-center justify-center">
-              <div className="text-6xl opacity-50">{getCharacterEmoji(character.personality)}</div>
-            </div>
-          )}
+          <img
+            src={character.thumbnailUrl ?? ''}
+            alt={character.name}
+            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
+          />
         </div>
 
         {/* Character Info */}
@@ -95,8 +89,8 @@ export function CharacterCard({ character, isCreateNew = false, onClick }: Chara
           {/* Optional: Show settings/traits as small badges */}
           {character.setting && (
             <div className="mt-2">
-              <Badge variant="outline" className="text-xs">
-                {character.setting}
+              <Badge variant="outline" className="max-w-full text-xs">
+                <span className="line-clamp-1">{character.setting}</span>
               </Badge>
             </div>
           )}
@@ -104,34 +98,4 @@ export function CharacterCard({ character, isCreateNew = false, onClick }: Chara
       </CardContent>
     </Card>
   )
-}
-
-// Helper function to get a character emoji based on personality
-function getCharacterEmoji(personality: string): string {
-  const lower = personality.toLowerCase()
-
-  if (lower.includes('cheerful') || lower.includes('happy') || lower.includes('energetic')) {
-    return '😊'
-  }
-  if (lower.includes('mysterious') || lower.includes('dark')) {
-    return '🌙'
-  }
-  if (lower.includes('cool') || lower.includes('calm')) {
-    return '😎'
-  }
-  if (lower.includes('fierce') || lower.includes('warrior') || lower.includes('fighter')) {
-    return '⚔️'
-  }
-  if (lower.includes('magical') || lower.includes('mage') || lower.includes('witch')) {
-    return '✨'
-  }
-  if (lower.includes('cute') || lower.includes('adorable')) {
-    return '🌸'
-  }
-  if (lower.includes('smart') || lower.includes('intelligent')) {
-    return '🧠'
-  }
-
-  // Default emoji
-  return '🎭'
 }

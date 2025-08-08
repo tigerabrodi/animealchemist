@@ -1,22 +1,26 @@
 import { api } from '@convex/_generated/api'
 import { Id } from '@convex/_generated/dataModel'
-import { useQuery } from 'convex/react'
-import { Edit, Image as ImageIcon, Plus, Video } from 'lucide-react'
+import { useAction, useQuery } from 'convex/react'
+import { Edit, Image as ImageIcon, Plus, Video, Wand2 } from 'lucide-react'
 import { useState } from 'react'
 import { generatePath, useNavigate, useParams } from 'react-router'
+import { toast } from 'sonner'
 
 import { MediaGrid } from '@/components/MediaGrid'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { HeaderPortal } from '@/layouts/authenticated/components/HeaderPortal'
 import { ROUTES } from '@/lib/constants'
+import { getErrorMessage, handlePromise } from '@/lib/utils'
 
 export function CharacterDetail() {
   const { characterId } = useParams<{ characterId: Id<'characters'> }>()
   const navigate = useNavigate()
   const [activeTab, setActiveTab] = useState('all')
+  const [isGeneratingNew, setIsGeneratingNew] = useState(false)
 
   // Get character data
   const character = useQuery(
@@ -43,22 +47,30 @@ export function CharacterDetail() {
     void navigate(generatePath(ROUTES.characterEdit, { characterId: characterId! }))
   }
 
-  const handleGenerateImage = () => {
-    // Navigate to a generation page or open a modal
-    // For now, we'll navigate to the first image if exists, or show a toast
-    if (images && images.length > 0) {
-      void navigate(
-        generatePath(ROUTES.characterImageDetail, {
-          characterId: characterId!,
-          imageId: images[0]._id,
-        })
-      )
+  const generateTextToImage = useAction(api.images.actions.generateTextToImage)
+
+  const handleGenerateImage = async () => {
+    if (!characterId || !character) return
+
+    setIsGeneratingNew(true)
+
+    const defaultPrompt = `${character.name} standing in a characteristic pose`
+    const [error] = await handlePromise(
+      generateTextToImage({
+        characterId: characterId,
+        prompt: defaultPrompt,
+        aspectRatio: '1:1',
+        isInitial: false,
+      })
+    )
+
+    if (error) {
+      toast.error(getErrorMessage({ error }))
     } else {
-      // Could open a modal here for direct generation
-      void navigate(
-        generatePath(ROUTES.characterImageDetail, { characterId: characterId!, imageId: '' })
-      )
+      toast.success('Generating a fresh image for this character')
     }
+
+    setIsGeneratingNew(false)
   }
 
   if (isLoading) {
@@ -168,10 +180,22 @@ export function CharacterDetail() {
                     </TabsTrigger>
                   </TabsList>
 
-                  <Button onClick={handleGenerateImage}>
-                    <Plus className="mr-2 h-4 w-4" />
-                    Generate
-                  </Button>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        onClick={handleGenerateImage}
+                        isLoading={isGeneratingNew}
+                        loadingText="Generating..."
+                        disabled={isGeneratingNew}
+                      >
+                        <Wand2 className="mr-2 h-4 w-4" />
+                        Generate New
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      Generate a fresh image based on this character&apos;s traits
+                    </TooltipContent>
+                  </Tooltip>
                 </div>
 
                 <TabsContent value="all">
@@ -255,7 +279,7 @@ function NotFoundState() {
             The character you&apos;re looking for doesn&apos;t exist or you don&apos;t have access
             to it.
           </p>
-          <Button onClick={() => navigate('/characters')}>Back to Characters</Button>
+          <Button onClick={() => navigate(ROUTES.characters)}>Back to Characters</Button>
         </CardContent>
       </Card>
     </main>

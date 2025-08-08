@@ -10,8 +10,6 @@ import {
   Play,
   Trash2,
   Video as VideoIcon,
-  Volume2,
-  VolumeX,
 } from 'lucide-react'
 import { useRef, useState } from 'react'
 import { generatePath, useNavigate, useParams } from 'react-router'
@@ -175,10 +173,9 @@ export function VideoDetail() {
 
                 {/* Video Controls Overlay */}
                 <div className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 transition-opacity duration-300 hover:opacity-100">
-                  <div className="flex items-center gap-4 rounded-lg bg-black/60 px-6 py-3 backdrop-blur-sm">
+                  <div className="flex items-center gap-4 rounded-xl bg-black/60 p-2 backdrop-blur-sm">
                     <Button
                       variant="ghost"
-                      size="sm"
                       onClick={handlePlayPause}
                       className="text-white hover:bg-white/20"
                     >
@@ -187,15 +184,6 @@ export function VideoDetail() {
                       ) : (
                         <Play className="ml-1 h-6 w-6" />
                       )}
-                    </Button>
-
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={handleMuteToggle}
-                      className="text-white hover:bg-white/20"
-                    >
-                      {isMuted ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
                     </Button>
                   </div>
                 </div>

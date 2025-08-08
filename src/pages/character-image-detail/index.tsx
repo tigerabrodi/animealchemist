@@ -46,7 +46,7 @@ export function ImageDetail() {
   const [isGeneratingVariation, setIsGeneratingVariation] = useState(false)
 
   const [videoPrompt, setVideoPrompt] = useState('')
-  const [videoDuration, setVideoDuration] = useState('3')
+  const [videoDuration, setVideoDuration] = useState('5')
   const [isGeneratingVideo, setIsGeneratingVideo] = useState(false)
 
   // Get image data
@@ -106,7 +106,7 @@ export function ImageDetail() {
       toast.success('Video animation started!')
       // Reset form
       setVideoPrompt('')
-      setVideoDuration('3')
+      setVideoDuration('5')
       // Navigate to character page to see the video
       void navigate(generatePath(ROUTES.characterDetail, { characterId: characterId! }))
     }
@@ -377,10 +377,8 @@ export function ImageDetail() {
                       <SelectValue placeholder="Select duration" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="2">2 seconds</SelectItem>
-                      <SelectItem value="3">3 seconds</SelectItem>
-                      <SelectItem value="4">4 seconds</SelectItem>
                       <SelectItem value="5">5 seconds</SelectItem>
+                      <SelectItem value="10">10 seconds</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
