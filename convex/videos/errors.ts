@@ -15,6 +15,6 @@ export const videoErrors = {
   }),
   INVALID_DURATION: new ErrorWithCode({
     code: 'INVALID_DURATION',
-    message: 'Invalid video duration specified',
+    message: 'Video duration must be either 5 or 10 seconds',
   }),
 } as const
