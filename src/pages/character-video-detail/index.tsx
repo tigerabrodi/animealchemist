@@ -33,7 +33,6 @@ export function VideoDetail() {
   const videoRef = useRef<HTMLVideoElement>(null)
 
   const [isPlaying, setIsPlaying] = useState(false)
-  const [isMuted, setIsMuted] = useState(false)
 
   // Get video data
   const video = useQuery(api.videos.queries.getVideoById, videoId ? { videoId: videoId } : 'skip')
@@ -51,13 +50,6 @@ export function VideoDetail() {
         void videoRef.current.play()
       }
       setIsPlaying(!isPlaying)
-    }
-  }
-
-  const handleMuteToggle = () => {
-    if (videoRef.current) {
-      videoRef.current.muted = !isMuted
-      setIsMuted(!isMuted)
     }
   }
 

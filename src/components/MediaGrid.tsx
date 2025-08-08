@@ -1,9 +1,11 @@
 import { api } from '@convex/_generated/api'
+import { Id } from '@convex/_generated/dataModel'
 import { FunctionReturnType } from 'convex/server'
 import { Clock, Image, Play } from 'lucide-react'
-import { useNavigate } from 'react-router'
+import { generatePath, useNavigate } from 'react-router'
 
 import { Badge } from '@/components/ui/badge'
+import { ROUTES } from '@/lib/constants'
 import { cn } from '@/lib/utils'
 
 type ImageItem = FunctionReturnType<typeof api.images.queries.getCharacterImages>[0] & {
@@ -20,23 +22,37 @@ interface MediaGridProps {
   items: Array<MediaItem>
   characterId: string
   className?: string
+  onImageMouseEnter: (imageId: Id<'images'>) => void
+  onVideoMouseEnter: (videoId: Id<'videos'>) => void
 }
 
-export function MediaGrid({ items, characterId, className }: MediaGridProps) {
+export function MediaGrid({
+  items,
+  characterId,
+  className,
+  onImageMouseEnter,
+  onVideoMouseEnter,
+}: MediaGridProps) {
   const navigate = useNavigate()
 
   const handleItemClick = (item: MediaItem) => {
     if (item.type === 'image') {
-      void navigate(`/character/${characterId}/image/${item._id}`)
+      void navigate(generatePath(ROUTES.characterImageDetail, { characterId, imageId: item._id }))
     } else {
-      void navigate(`/character/${characterId}/video/${item._id}`)
+      void navigate(generatePath(ROUTES.characterVideoDetail, { characterId, videoId: item._id }))
     }
   }
 
   return (
     <div className={cn('grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3', className)}>
       {items.map((item) => (
-        <MediaGridItem key={item._id} item={item} onClick={() => handleItemClick(item)} />
+        <MediaGridItem
+          key={item._id}
+          item={item}
+          onClick={() => handleItemClick(item)}
+          onImageMouseEnter={onImageMouseEnter}
+          onVideoMouseEnter={onVideoMouseEnter}
+        />
       ))}
     </div>
   )
@@ -45,9 +61,16 @@ export function MediaGrid({ items, characterId, className }: MediaGridProps) {
 interface MediaGridItemProps {
   item: MediaItem
   onClick: () => void
+  onImageMouseEnter: (imageId: Id<'images'>) => void
+  onVideoMouseEnter: (videoId: Id<'videos'>) => void
 }
 
-function MediaGridItem({ item, onClick }: MediaGridItemProps) {
+function MediaGridItem({
+  item,
+  onClick,
+  onImageMouseEnter,
+  onVideoMouseEnter,
+}: MediaGridItemProps) {
   const isVideo = item.type === 'video'
   const createdDate = new Date(item.createdAt)
 
@@ -55,6 +78,13 @@ function MediaGridItem({ item, onClick }: MediaGridItemProps) {
     <div
       className="group bg-card cursor-pointer overflow-hidden rounded-lg border transition-all hover:shadow-lg"
       onClick={onClick}
+      onMouseEnter={() => {
+        if (item.type === 'image') {
+          onImageMouseEnter(item._id)
+        } else {
+          onVideoMouseEnter(item._id)
+        }
+      }}
     >
       {/* Thumbnail */}
       <div className="bg-muted relative aspect-square overflow-hidden">

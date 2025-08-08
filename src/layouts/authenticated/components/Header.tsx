@@ -1,9 +1,11 @@
+import { api } from '@convex/_generated/api'
 import { Doc } from '@convex/_generated/dataModel'
 import { AlertCircle, ArrowLeft, Home, Settings } from 'lucide-react'
 import { useLocation, useNavigate } from 'react-router'
 
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { usePrefetchQuery } from '@/hooks/usePrefetchQuery'
 import { cn } from '@/lib/utils'
 
 interface HeaderProps {
@@ -14,6 +16,7 @@ interface HeaderProps {
 export function Header({ onSettingsClick, currentUser }: HeaderProps) {
   const navigate = useNavigate()
   const location = useLocation()
+  const prefetchAllCharacters = usePrefetchQuery(api.characters.queries.getUserCharacters)
   const hasApiKey = !!currentUser.apiKey
 
   // Determine if we should show back button
@@ -26,6 +29,10 @@ export function Header({ onSettingsClick, currentUser }: HeaderProps) {
 
   const handleHomeClick = () => {
     void navigate('/characters')
+  }
+
+  const handlePrefetchAllCharacters = () => {
+    void prefetchAllCharacters({})
   }
 
   return (
@@ -62,7 +69,13 @@ export function Header({ onSettingsClick, currentUser }: HeaderProps) {
 
             {/* Home button - only show if not on characters page */}
             {location.pathname !== '/characters' && location.pathname !== '/' && (
-              <Button variant="ghost" size="sm" onClick={handleHomeClick} className="gap-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleHomeClick}
+                onMouseEnter={handlePrefetchAllCharacters}
+                className="gap-2"
+              >
                 <Home className="h-4 w-4" />
                 Characters
               </Button>

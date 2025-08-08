@@ -1,4 +1,5 @@
 import { api } from '@convex/_generated/api'
+import { Id } from '@convex/_generated/dataModel'
 import { useQuery } from 'convex/react'
 import { Plus, Search } from 'lucide-react'
 import { useState } from 'react'
@@ -9,12 +10,18 @@ import { CharacterCard } from './components/CharacterCard'
 import NarutoCartoonPng from '@/assets/naruto-cartoon.png'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { usePrefetchQuery } from '@/hooks/usePrefetchQuery'
 import { HeaderPortal } from '@/layouts/authenticated/components/HeaderPortal'
 import { ROUTES } from '@/lib/constants'
 
 export function CharactersGrid() {
   const navigate = useNavigate()
   const [searchQuery, setSearchQuery] = useState('')
+  const prefetchCharacterDetail = usePrefetchQuery(api.characters.queries.getCharacterById)
+
+  const prefetchImages = usePrefetchQuery(api.images.queries.getCharacterImages)
+
+  const prefetchVideos = usePrefetchQuery(api.videos.queries.getCharacterVideos)
 
   const characters = useQuery(api.characters.queries.getUserCharacters)
   const isLoading = characters === undefined
@@ -36,6 +43,12 @@ export function CharactersGrid() {
 
   const handleCharacterClick = (characterId: string) => {
     void navigate(generatePath(ROUTES.characterDetail, { characterId }))
+  }
+
+  const handlePrefetchCharacter = (characterId: Id<'characters'>) => {
+    void prefetchCharacterDetail({ characterId })
+    void prefetchImages({ characterId })
+    void prefetchVideos({ characterId })
   }
 
   if (isLoading) {
@@ -94,6 +107,7 @@ export function CharactersGrid() {
               key={character._id}
               character={character}
               onClick={() => handleCharacterClick(character._id)}
+              onMouseEnter={() => handlePrefetchCharacter(character._id)}
             />
           ))}
         </div>

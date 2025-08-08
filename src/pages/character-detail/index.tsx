@@ -12,6 +12,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import { usePrefetchQuery } from '@/hooks/usePrefetchQuery'
 import { HeaderPortal } from '@/layouts/authenticated/components/HeaderPortal'
 import { ROUTES } from '@/lib/constants'
 import { getErrorMessage, handlePromise } from '@/lib/utils'
@@ -21,6 +22,9 @@ export function CharacterDetail() {
   const navigate = useNavigate()
   const [activeTab, setActiveTab] = useState('all')
   const [isGeneratingNew, setIsGeneratingNew] = useState(false)
+
+  const prefetchImage = usePrefetchQuery(api.images.queries.getImageById)
+  const prefetchVideo = usePrefetchQuery(api.videos.queries.getVideoById)
 
   // Get character data
   const character = useQuery(
@@ -113,6 +117,14 @@ export function CharacterDetail() {
 
   const isEmpty = allMedia.length === 0
 
+  const handleImageMouseEnter = (imageId: Id<'images'>) => {
+    void prefetchImage({ imageId })
+  }
+
+  const handleVideoMouseEnter = (videoId: Id<'videos'>) => {
+    void prefetchVideo({ videoId })
+  }
+
   return (
     <>
       <HeaderPortal
@@ -199,14 +211,24 @@ export function CharacterDetail() {
                 </div>
 
                 <TabsContent value="all">
-                  <MediaGrid items={filteredMedia} characterId={character._id} />
+                  <MediaGrid
+                    items={filteredMedia}
+                    onImageMouseEnter={handleImageMouseEnter}
+                    onVideoMouseEnter={handleVideoMouseEnter}
+                    characterId={character._id}
+                  />
                 </TabsContent>
 
                 <TabsContent value="images">
                   {filteredMedia.length === 0 ? (
                     <NoContentState type="images" onGenerateClick={handleGenerateImage} />
                   ) : (
-                    <MediaGrid items={filteredMedia} characterId={character._id} />
+                    <MediaGrid
+                      items={filteredMedia}
+                      characterId={character._id}
+                      onImageMouseEnter={handleImageMouseEnter}
+                      onVideoMouseEnter={handleVideoMouseEnter}
+                    />
                   )}
                 </TabsContent>
 
@@ -214,7 +236,12 @@ export function CharacterDetail() {
                   {filteredMedia.length === 0 ? (
                     <NoContentState type="videos" />
                   ) : (
-                    <MediaGrid items={filteredMedia} characterId={character._id} />
+                    <MediaGrid
+                      items={filteredMedia}
+                      characterId={character._id}
+                      onImageMouseEnter={handleImageMouseEnter}
+                      onVideoMouseEnter={handleVideoMouseEnter}
+                    />
                   )}
                 </TabsContent>
               </Tabs>

@@ -1,4 +1,5 @@
 import { api } from '@convex/_generated/api'
+import { Id } from '@convex/_generated/dataModel'
 import { FunctionReturnType } from 'convex/server'
 import { Image, Plus, Video } from 'lucide-react'
 
@@ -11,9 +12,15 @@ interface CharacterCardProps {
   character?: Character
   isCreateNew?: boolean
   onClick: () => void
+  onMouseEnter?: ({ characterId }: { characterId: Id<'characters'> }) => void
 }
 
-export function CharacterCard({ character, isCreateNew = false, onClick }: CharacterCardProps) {
+export function CharacterCard({
+  character,
+  isCreateNew = false,
+  onClick,
+  onMouseEnter,
+}: CharacterCardProps) {
   if (isCreateNew) {
     return (
       <Card
@@ -44,6 +51,7 @@ export function CharacterCard({ character, isCreateNew = false, onClick }: Chara
     <Card
       className="group cursor-pointer overflow-hidden transition-all hover:shadow-lg"
       onClick={onClick}
+      onMouseEnter={() => onMouseEnter?.({ characterId: character._id })}
     >
       <CardContent className="p-0">
         {/* Character Thumbnail */}
