@@ -59,7 +59,7 @@ function MediaGridItem({ item, onClick }: MediaGridItemProps) {
       {/* Thumbnail */}
       <div className="bg-muted relative aspect-square overflow-hidden">
         <img
-          src={item.url ?? ''}
+          src={(isVideo ? item.sourceImageUrl : item.url) ?? ''}
           alt={isVideo ? item.prompt : item.userPrompt}
           className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
         />
