@@ -64,6 +64,14 @@ export default tseslint.config(
           prefix: ['is', 'should', 'has', 'are', 'can', 'was', 'show'],
         },
       ],
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_',
+        },
+      ],
       ...react.configs.recommended.rules,
       ...react.configs['jsx-runtime'].rules,
     },
